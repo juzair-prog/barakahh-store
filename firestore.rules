@@ -3,27 +3,26 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Admin allow-list. Create /admins/{AUTH_USER_UID} manually in Firestore
-    // with { role: "admin" } before using admin-only database features.
-    match /admins/{uid} {
-      allow read: if request.auth != null && request.auth.uid == uid;
-      allow write: if false;
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == "kmuhammedjuzair@gmail.com";
     }
 
-    // Orders/products are intentionally locked until the production rules
-    // and server-side BKR sequence are added.
     match /orders/{orderId} {
-      allow read, write: if false;
+      allow read, write: if isAdmin();
     }
 
     match /products/{productId} {
       allow read: if true;
-      allow write: if request.auth != null
-        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+      allow write: if isAdmin();
     }
 
-    match /orderCounter/{docId} {
-      allow read, write: if false;
+    match /settings/{docId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /admins/{uid} {
+      allow read, write: if isAdmin();
     }
 
     match /{document=**} {
