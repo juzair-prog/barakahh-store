@@ -7,19 +7,146 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="nav"><strong>BARAKAHH ADMIN</strong><button id="logout" class="text-button">Sign out</button></header>
+  <header class="nav">
+    <strong>BARAKAHH ADMIN</strong>
+    <button id="logout" class="text-button">Sign out</button>
+  </header>
+
   <main class="dashboard">
     <section class="card">
       <p class="eyebrow">DASHBOARD</p>
       <h1>Orders & Store</h1>
       <p id="status" class="muted">Checking authentication…</p>
+
       <div class="grid">
-        <div class="stat"><span>Orders</span><strong>Coming next</strong></div>
-        <div class="stat"><span>Products</span><strong>Coming next</strong></div>
-        <div class="stat"><span>Manual Orders</span><strong>Coming next</strong></div>
+        <div class="stat">
+          <span>Total Orders</span>
+          <strong id="orderCount">0</strong>
+        </div>
+
+        <div class="stat">
+          <span>Manual Orders</span>
+          <strong id="manualCount">0</strong>
+        </div>
+
+        <div class="stat">
+          <span>Last Order ID</span>
+          <strong id="lastOrder">—</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <p class="eyebrow">MANUAL ORDERS</p>
+      <h2>Add Manual Order</h2>
+
+      <p class="muted">
+        For WhatsApp, Instagram, phone and other offline orders.
+        The system generates the next BKR order ID automatically.
+      </p>
+
+      <form id="manualOrderForm" class="order-form">
+
+        <label>
+          Customer name
+          <input id="customer" required>
+        </label>
+
+        <label>
+          Phone
+          <input id="phone" type="tel" required>
+        </label>
+
+        <label>
+          Product
+          <input
+            id="product"
+            value="Barakahh Printed T-Shirt"
+            required
+          >
+        </label>
+
+        <label>
+          Size
+          <select id="size" required>
+            <option value="">Select size</option>
+            <option>XS</option>
+            <option>S</option>
+            <option>M</option>
+            <option>L</option>
+            <option>XL</option>
+            <option>XXL</option>
+          </select>
+        </label>
+
+        <label>
+          Colour
+          <select id="colour" required>
+            <option>Black</option>
+            <option>White</option>
+          </select>
+        </label>
+
+        <label>
+          Quantity
+          <input
+            id="quantity"
+            type="number"
+            min="1"
+            value="1"
+            required
+          >
+        </label>
+
+        <label>
+          Amount (₹)
+          <input
+            id="amount"
+            type="number"
+            min="0"
+            value="499"
+            required
+          >
+        </label>
+
+        <label>
+          Payment
+          <select id="payment" required>
+            <option>COD</option>
+            <option>UPI</option>
+            <option>Online Payment</option>
+            <option>Paid</option>
+          </select>
+        </label>
+
+        <label>
+          Address
+          <textarea id="address" rows="3" required></textarea>
+        </label>
+
+        <button
+          class="button"
+          type="submit"
+          id="saveOrder"
+        >
+          Create Manual Order
+        </button>
+
+        <p id="formMessage" class="muted"></p>
+
+      </form>
+    </section>
+
+    <section class="card">
+      <p class="eyebrow">ORDERS</p>
+      <h2>Recent Orders</h2>
+
+      <div id="ordersList" class="orders-list">
+        <p class="muted">Loading orders…</p>
       </div>
     </section>
   </main>
+
   <script type="module" src="dashboard.js"></script>
 </body>
 </html>
