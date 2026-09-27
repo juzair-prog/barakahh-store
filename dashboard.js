@@ -517,7 +517,6 @@ function renderOrders() {
 }/* -----------------------------
    RENDER ORDER HISTORY
 ----------------------------- */
-
 function renderOrderHistory() {
 
   if (allOrders.length === 0) {
@@ -535,7 +534,7 @@ function renderOrderHistory() {
     const card =
       document.createElement("div");
 
-    card.className = "order-card";
+    card.className = "order-card order-card--readonly";
 
 
     /* ORDER ID */
@@ -628,180 +627,27 @@ function renderOrderHistory() {
       `Address: ${order.address || "-"}`;
 
 
-    /* STATUS */
+    /* STATUS (read-only text, not a select) */
 
-    const statusLabel =
-      document.createElement("label");
+    const statusText =
+      document.createElement("p");
 
-    statusLabel.textContent =
-      "Status";
-
-
-    const statusSelect =
-      document.createElement("select");
-
-    [
-      "Confirmed",
-      "Packed",
-      "Shipped",
-      "Delivered",
-      "Cancelled"
-    ].forEach((statusOption) => {
-
-      const option =
-        document.createElement("option");
-
-      option.value =
-        statusOption;
-
-      option.textContent =
-        statusOption;
-
-      if (order.status === statusOption) {
-        option.selected = true;
-      }
-
-      statusSelect.appendChild(option);
-
-    });
+    statusText.textContent =
+      `Status: ${order.status || "Confirmed"}`;
 
 
-    /* TRACKING */
+    /* TRACKING ID (read-only text, only if present) */
 
-    const trackingInput =
-      document.createElement("input");
+    let trackingText = null;
 
-    trackingInput.type =
-      "text";
+    if (order.trackingId) {
 
-    trackingInput.placeholder =
-      "Tracking ID";
+      trackingText =
+        document.createElement("p");
 
-    trackingInput.value =
-      order.trackingId || "";
-
-
-    /* SAVE BUTTON */
-
-    const saveButton =
-      document.createElement("button");
-
-    saveButton.className =
-      "button";
-
-    saveButton.textContent =
-      "Save Update";
-
-
-    saveButton.addEventListener(
-      "click",
-      async () => {
-
-        saveButton.disabled = true;
-
-        saveButton.textContent =
-          "Saving…";
-
-        try {
-
-          await updateDoc(
-            doc(db, "orders", order.id),
-            {
-              status:
-                statusSelect.value,
-
-              trackingId:
-                trackingInput.value.trim(),
-
-              updatedAt:
-                serverTimestamp()
-            }
-          );
-
-          saveButton.textContent =
-            "Saved ✓";
-
-          setTimeout(() => {
-
-            saveButton.textContent =
-              "Save Update";
-
-            saveButton.disabled =
-              false;
-
-          }, 1200);
-
-        } catch (error) {
-
-          console.error(error);
-
-          saveButton.textContent =
-            "Error";
-
-          saveButton.disabled =
-            false;
-
-        }
-
-      }
-    );
-
-
-    /* DELETE BUTTON */
-
-    const deleteButton =
-      document.createElement("button");
-
-    deleteButton.className =
-      "button";
-
-    deleteButton.textContent =
-      "Delete Order";
-
-
-    deleteButton.addEventListener(
-      "click",
-      async () => {
-
-        const orderNumber =
-          order.orderId || order.id;
-
-        const confirmed =
-          window.confirm(
-            `Delete order ${orderNumber}? This cannot be undone.`
-          );
-
-        if (!confirmed) {
-          return;
-        }
-
-        deleteButton.disabled = true;
-
-        deleteButton.textContent =
-          "Deleting…";
-
-        try {
-
-          await deleteDoc(
-            doc(db, "orders", order.id)
-          );
-
-          deleteButton.textContent =
-            "Deleted ✓";
-
-        } catch (error) {
-
-          console.error(error);
-
-          deleteButton.textContent =
-            "Delete Error";
-
-          deleteButton.disabled =
-            false;
-        }
-
-      }
-    );
+      trackingText.textContent =
+        `Tracking ID: ${order.trackingId}`;
+    }
 
 
     /* ADD EVERYTHING TO CARD */
@@ -816,19 +662,18 @@ function renderOrderHistory() {
     card.appendChild(amount);
     card.appendChild(payment);
     card.appendChild(address);
+    card.appendChild(statusText);
 
-    card.appendChild(statusLabel);
-    card.appendChild(statusSelect);
-
-    card.appendChild(trackingInput);
-
-    card.appendChild(saveButton);
-    card.appendChild(deleteButton);
+    if (trackingText) {
+      card.appendChild(trackingText);
+    }
 
     orderHistoryList.appendChild(card);
 
   });
 }
+
+
 
 renderOrderHistory();
 /* -----------------------------
