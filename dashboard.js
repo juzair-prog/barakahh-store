@@ -13,6 +13,7 @@ import {
   onSnapshot,
   runTransaction,
   updateDoc,
+  deleteDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -107,7 +108,8 @@ function updateStats() {
   manualCount.textContent = manualOrders.length;
 
   if (allOrders.length > 0) {
-    lastOrder.textContent = allOrders[0].orderId || allOrders[0].id;
+    lastOrder.textContent =
+      allOrders[0].orderId || allOrders[0].id;
   } else {
     lastOrder.textContent = "—";
   }
@@ -132,35 +134,62 @@ manualOrderForm.addEventListener("submit", async (event) => {
   saveButton.textContent = "Creating Order…";
   formMessage.textContent = "";
 
-  const customer = document.getElementById("customer").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const product = document.getElementById("product").value.trim();
-  const size = document.getElementById("size").value;
-  const colour = document.getElementById("colour").value;
-  const quantity = Number(document.getElementById("quantity").value);
-  const amount = Number(document.getElementById("amount").value);
-  const payment = document.getElementById("payment").value;
-  const address = document.getElementById("address").value.trim();
+  const customer =
+    document.getElementById("customer").value.trim();
+
+  const phone =
+    document.getElementById("phone").value.trim();
+
+  const product =
+    document.getElementById("product").value.trim();
+
+  const size =
+    document.getElementById("size").value;
+
+  const colour =
+    document.getElementById("colour").value;
+
+  const quantity =
+    Number(document.getElementById("quantity").value);
+
+  const amount =
+    Number(document.getElementById("amount").value);
+
+  const payment =
+    document.getElementById("payment").value;
+
+  const address =
+    document.getElementById("address").value.trim();
 
   try {
-    const counterRef = doc(db, "settings", "orderCounter");
+
+    const counterRef =
+      doc(db, "settings", "orderCounter");
 
     let newOrderId = "";
 
     await runTransaction(db, async (transaction) => {
-      const counterSnap = await transaction.get(counterRef);
+
+      const counterSnap =
+        await transaction.get(counterRef);
 
       let lastNumber = 51;
 
       if (counterSnap.exists()) {
-        lastNumber = Number(counterSnap.data().lastNumber || 51);
+        lastNumber =
+          Number(
+            counterSnap.data().lastNumber || 51
+          );
       }
 
-      const nextNumber = lastNumber + 1;
+      const nextNumber =
+        lastNumber + 1;
 
-      newOrderId = `BKR${String(nextNumber).padStart(5, "0")}`;
+      newOrderId =
+        `BKR${String(nextNumber).padStart(5, "0")}`;
 
-      const orderRef = doc(db, "orders", newOrderId);
+      const orderRef =
+        doc(db, "orders", newOrderId);
 
       transaction.set(
         counterRef,
@@ -174,6 +203,7 @@ manualOrderForm.addEventListener("submit", async (event) => {
       );
 
       transaction.set(orderRef, {
+
         orderId: newOrderId,
 
         source: "manual",
@@ -193,8 +223,11 @@ manualOrderForm.addEventListener("submit", async (event) => {
 
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
+
         createdBy: currentUser.email
+
       });
+
     });
 
     formMessage.textContent =
@@ -206,13 +239,16 @@ manualOrderForm.addEventListener("submit", async (event) => {
       "Barakahh Printed T-Shirt";
 
     document.getElementById("quantity").value = "1";
+
     document.getElementById("amount").value = "499";
 
   } catch (error) {
+
     console.error(error);
 
     formMessage.textContent =
       "Order could not be created. Check Firestore rules.";
+
   }
 
   saveButton.disabled = false;
@@ -221,11 +257,13 @@ manualOrderForm.addEventListener("submit", async (event) => {
 
 
 /* -----------------------------
-   RENDER RECENT ORDERS
+   RENDER ORDERS
 ----------------------------- */
 
 function renderOrders() {
+
   if (allOrders.length === 0) {
+
     ordersList.innerHTML =
       `<p class="muted">No orders yet.</p>`;
 
@@ -235,30 +273,61 @@ function renderOrders() {
   ordersList.innerHTML = "";
 
   allOrders.slice(0, 20).forEach((order) => {
-    const card = document.createElement("div");
+
+    const card =
+      document.createElement("div");
 
     card.className = "order-card";
 
-    const title = document.createElement("h3");
+
+    /* ORDER ID */
+
+    const title =
+      document.createElement("h3");
+
     title.textContent =
       order.orderId || order.id;
 
-    const customer = document.createElement("p");
+
+    /* CUSTOMER */
+
+    const customer =
+      document.createElement("p");
+
     customer.textContent =
       `${order.customer || "Customer"} • ${order.phone || ""}`;
 
-    const product = document.createElement("p");
+
+    /* PRODUCT */
+
+    const product =
+      document.createElement("p");
+
     product.textContent =
       `${order.product || ""} • Size: ${order.size || "-"} • ${order.colour || "-"}`;
 
-    const amount = document.createElement("p");
+
+    /* AMOUNT */
+
+    const amount =
+      document.createElement("p");
+
     amount.textContent =
       `₹${order.amount || 0} • Qty: ${order.quantity || 1}`;
 
-    const statusLabel = document.createElement("label");
-    statusLabel.textContent = "Status";
 
-    const statusSelect = document.createElement("select");
+    /* STATUS */
+
+    const statusLabel =
+      document.createElement("label");
+
+    statusLabel.textContent =
+      "Status";
+
+
+    const statusSelect =
+      document.createElement("select");
+
 
     [
       "Confirmed",
@@ -267,68 +336,181 @@ function renderOrders() {
       "Delivered",
       "Cancelled"
     ].forEach((statusOption) => {
-      const option = document.createElement("option");
 
-      option.value = statusOption;
-      option.textContent = statusOption;
+      const option =
+        document.createElement("option");
+
+      option.value =
+        statusOption;
+
+      option.textContent =
+        statusOption;
 
       if (order.status === statusOption) {
         option.selected = true;
       }
 
       statusSelect.appendChild(option);
+
     });
 
-    const trackingInput = document.createElement("input");
+
+    /* TRACKING ID */
+
+    const trackingInput =
+      document.createElement("input");
 
     trackingInput.type = "text";
-    trackingInput.placeholder = "Tracking ID";
-    trackingInput.value = order.trackingId || "";
 
-    const saveButton = document.createElement("button");
+    trackingInput.placeholder =
+      "Tracking ID";
 
-    saveButton.className = "button";
-    saveButton.textContent = "Save Update";
+    trackingInput.value =
+      order.trackingId || "";
 
-    saveButton.addEventListener("click", async () => {
-      saveButton.disabled = true;
-      saveButton.textContent = "Saving…";
 
-      try {
-        await updateDoc(
-          doc(db, "orders", order.id),
-          {
-            status: statusSelect.value,
-            trackingId: trackingInput.value.trim(),
-            updatedAt: serverTimestamp()
-          }
-        );
+    /* SAVE BUTTON */
 
-        saveButton.textContent = "Saved ✓";
+    const saveButton =
+      document.createElement("button");
 
-        setTimeout(() => {
-          saveButton.textContent = "Save Update";
-          saveButton.disabled = false;
-        }, 1200);
+    saveButton.className =
+      "button";
 
-      } catch (error) {
-        console.error(error);
+    saveButton.textContent =
+      "Save Update";
 
-        saveButton.textContent = "Error";
-        saveButton.disabled = false;
+
+    saveButton.addEventListener(
+      "click",
+      async () => {
+
+        saveButton.disabled = true;
+
+        saveButton.textContent =
+          "Saving…";
+
+        try {
+
+          await updateDoc(
+            doc(db, "orders", order.id),
+            {
+              status: statusSelect.value,
+
+              trackingId:
+                trackingInput.value.trim(),
+
+              updatedAt:
+                serverTimestamp()
+            }
+          );
+
+          saveButton.textContent =
+            "Saved ✓";
+
+          setTimeout(() => {
+
+            saveButton.textContent =
+              "Save Update";
+
+            saveButton.disabled =
+              false;
+
+          }, 1200);
+
+        } catch (error) {
+
+          console.error(error);
+
+          saveButton.textContent =
+            "Error";
+
+          saveButton.disabled =
+            false;
+        }
       }
-    });
+    );
+
+
+    /* DELETE BUTTON */
+
+    const deleteButton =
+      document.createElement("button");
+
+    deleteButton.className =
+      "button";
+
+    deleteButton.textContent =
+      "Delete Order";
+
+
+    deleteButton.addEventListener(
+      "click",
+      async () => {
+
+        const orderNumber =
+          order.orderId || order.id;
+
+        const confirmed =
+          window.confirm(
+            `Delete order ${orderNumber}? This cannot be undone.`
+          );
+
+        if (!confirmed) {
+          return;
+        }
+
+        deleteButton.disabled = true;
+
+        deleteButton.textContent =
+          "Deleting…";
+
+        try {
+
+          await deleteDoc(
+            doc(db, "orders", order.id)
+          );
+
+          deleteButton.textContent =
+            "Deleted ✓";
+
+        } catch (error) {
+
+          console.error(error);
+
+          deleteButton.textContent =
+            "Delete Error";
+
+          deleteButton.disabled =
+            false;
+        }
+
+      }
+    );
+
+
+    /* ADD ELEMENTS */
 
     card.appendChild(title);
+
     card.appendChild(customer);
+
     card.appendChild(product);
+
     card.appendChild(amount);
+
     card.appendChild(statusLabel);
+
     card.appendChild(statusSelect);
+
     card.appendChild(trackingInput);
+
     card.appendChild(saveButton);
 
+    card.appendChild(deleteButton);
+
     ordersList.appendChild(card);
+
   });
 }
 
@@ -337,8 +519,14 @@ function renderOrders() {
    SIGN OUT
 ----------------------------- */
 
-logoutButton.addEventListener("click", async () => {
-  await signOut(auth);
+logoutButton.addEventListener(
+  "click",
+  async () => {
 
-  window.location.href = "admin.html";
-});
+    await signOut(auth);
+
+    window.location.href =
+      "admin.html";
+
+  }
+);
