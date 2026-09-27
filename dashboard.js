@@ -81,6 +81,7 @@ function startOrdersListener() {
 
       updateStats();
       renderOrders();
+      renderOrderHistory(); 
     },
     (error) => {
       console.error(error);
