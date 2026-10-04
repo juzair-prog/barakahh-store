@@ -292,7 +292,7 @@ function renderOrderHistory() {
   completed.textContent = "✓ Completed";
   card.appendChild(completed);
 }
-    orderHistoryList.appendChild(card)o;
+    orderHistoryList.appendChild(card);
   });
 }
 
