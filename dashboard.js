@@ -269,23 +269,30 @@ function renderOrderHistory() {
       card.appendChild(p);
     });
 
-    const actions = document.createElement("div");
-    actions.className = "order-history-actions";
+    if ((order.status || "").toLowerCase() !== "delivered") {
+  const actions = document.createElement("div");
+  actions.className = "order-history-actions";
 
-    const editButton = document.createElement("button");
-    editButton.className = "button";
-    editButton.textContent = "Edit Order";
+  const editButton = document.createElement("button");
+  editButton.className = "button";
+  editButton.textContent = "Edit Order";
 
-    const deleteButton = document.createElement("button");
-    deleteButton.className = "button button-delete";
-    deleteButton.textContent = "Delete Order";
+  const deleteButton = document.createElement("button");
+  deleteButton.className = "button button-delete";
+  deleteButton.textContent = "Delete Order";
 
-    editButton.addEventListener("click", () => startHistoryEdit(card, order));
-    deleteButton.addEventListener("click", () => deleteHistoryOrder(order, deleteButton));
+  editButton.addEventListener("click", () => startHistoryEdit(card, order));
+  deleteButton.addEventListener("click", () => deleteHistoryOrder(order, deleteButton));
 
-    actions.append(editButton, deleteButton);
-    card.appendChild(actions);
-    orderHistoryList.appendChild(card);
+  actions.append(editButton, deleteButton);
+  card.appendChild(actions);
+} else {
+  const completed = document.createElement("p");
+  completed.className = "order-completed-label";
+  completed.textContent = "✓ Completed";
+  card.appendChild(completed);
+}
+    orderHistoryList.appendChild(card)o;
   });
 }
 
