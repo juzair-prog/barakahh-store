@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Barakahh — Product Management</title>
+<style>
+:root{--bg:#0f1115;--card:#171a20;--card2:#1d2129;--text:#f5f5f5;--muted:#a6acb8;--line:#2b303a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.nav{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:#0f1115ee;border-bottom:1px solid var(--line)}
+.nav strong{font-size:14px;letter-spacing:.08em}.nav-actions{display:flex;gap:8px}
+button{border:1px solid var(--line);background:var(--card2);color:var(--text);border-radius:10px;padding:10px 13px;font:inherit;cursor:pointer}
+button:disabled{opacity:.5}.primary{background:#fff;color:#111;border-color:#fff}.danger{color:#ffadad}
+main{max-width:1050px;margin:auto;padding:24px 16px 60px}.hero,.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px}
+.eyebrow{font-size:11px;letter-spacing:.15em;color:var(--muted);margin:0 0 8px}h1,h2,h3{margin:0 0 10px}h1{font-size:28px}.muted{color:var(--muted)}
+.toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.search{background:var(--card2);border:1px solid var(--line);color:var(--text);padding:11px;border-radius:10px;font:inherit;width:230px}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:16px}.product-card{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:16px}
+.product-top{display:flex;justify-content:space-between;gap:10px}.badge{font-size:11px;padding:5px 8px;border-radius:99px;background:#2a3039}.price{font-size:20px;font-weight:700;margin:12px 0}
+.variant{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding:7px 0;font-size:13px}.ok{color:#bde9c8}.low{color:#ffe09a}.zero{color:#ff9d9d}.actions{display:flex;gap:8px;margin-top:12px}.actions button{flex:1}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}label{display:block;font-size:13px;color:#cdd2da}
+input,textarea,select{width:100%;margin-top:7px;background:var(--card2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:11px;font:inherit}textarea{min-height:80px;resize:vertical}.full{grid-column:1/-1}
+.colour-block{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px}.colour-head{display:flex;gap:8px;align-items:end}.colour-head label{flex:1}.size-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.empty{text-align:center;padding:30px;color:var(--muted)}
+@media(max-width:650px){.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.size-grid{grid-template-columns:repeat(2,1fr)}.search{width:100%}}
+</style></head>
+<body>
+<header class="nav"><strong>BARAKAHH ADMIN</strong><div class="nav-actions"><button id="backButton">Orders</button><button id="logout">Sign out</button></div></header>
+<main>
+<section class="hero"><p class="eyebrow">PRODUCT MANAGEMENT</p><h1>Products</h1><p class="muted">Manage products, colour/size stock and customer visibility.</p><p id="status" class="muted">Checking authentication…</p></section>
+<section class="card"><div class="toolbar"><div><p class="eyebrow">CATALOG</p><h2>Product List</h2></div><div><input id="search" class="search" placeholder="Search products…"><button id="addProduct" class="primary">+ Add Product</button></div></div><div id="productList" class="product-grid"><div class="empty">Loading products…</div></div></section>
+<section class="card" id="editorCard" hidden><p class="eyebrow">PRODUCT EDITOR</p><h2 id="editorTitle">Add Product</h2>
+<form id="productForm"><div class="form-grid">
+<label>Product name<input id="name" required maxlength="100" placeholder="Faith Print"></label>
+<label>SKU / Product ID<input id="sku" required maxlength="40" placeholder="BHK-TS-001"></label>
+<label>Price (₹)<input id="price" type="number" min="0" value="499" required></label>
+<label>Status<select id="productStatus"><option>Active</option><option>Hidden</option><option>Out of Stock</option></select></label>
+<label class="full">Description<textarea id="description" maxlength="1000"></textarea></label>
+<label class="full">Product photo URLs<textarea id="photos" placeholder="One image URL per line"></textarea></label>
+<div class="full"><label>Colour & size stock</label><div id="variants"></div><button type="button" id="addColour" style="margin-top:10px">+ Add Colour</button></div>
+</div><div class="form-actions"><button type="button" id="cancelEdit">Cancel</button><button type="submit" class="primary" id="saveProduct">Save Product</button></div><p id="formMessage" class="muted"></p></form>
+</section></main>
+<script type="module" src="./products.js"></script></body></html>
