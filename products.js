@@ -17,6 +17,41 @@ onAuthStateChanged(auth, user => {
   currentUser=user; $("status").textContent=`Signed in as ${user.email}`; listenProducts();
 });
 
+async function uploadPhotos(files) {
+  const uploadedUrls = [];
+
+  for (const file of files) {
+    if (!file.type.startsWith("image/")) {
+      throw new Error(`${file.name} is not an image.`);
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      throw new Error(`${file.name} is larger than 5 MB.`);
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+      {
+        method: "POST",
+        body: formData
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error?.message || "Image upload failed.");
+    }
+
+    uploadedUrls.push(result.secure_url);
+  }
+
+  return uploadedUrls;
+}
 function listenProducts(){
   onSnapshot(collection(db,"products"), snap=>{
     products=snap.docs.map(x=>({id:x.id,...x.data()}));
