@@ -29,6 +29,12 @@ input,textarea,select{width:100%;margin-top:7px;background:var(--card2);border:1
 <section class="card" id="editorCard" hidden><p class="eyebrow">PRODUCT EDITOR</p><h2 id="editorTitle">Add Product</h2>
 <form id="productForm"><div class="form-grid">
 <label>Product name<input id="name" required maxlength="100" placeholder="Faith Print"></label>
+<label>Category
+  <select id="category">
+    <option value="TS">T-Shirt</option>
+    <option value="HD">Hoodie</option>
+  </select>
+</label>
 <label>SKU / Product ID<input id="sku" required maxlength="40" placeholder="BHK-TS-001"></label>
 <label>Price (₹)<input id="price" type="number" min="0" value="499" required></label>
 <label>Status<select id="productStatus"><option>Active</option><option>Hidden</option><option>Out of Stock</option></select></label>
