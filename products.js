@@ -216,6 +216,7 @@ function openEditor(p = null) {
   $("formMessage").textContent = "";
 
   $("name").value = p?.name || "";
+  $("category").value = p?.category || "TS";
   $("sku").value = p?.sku || "";
   $("price").value = p?.price ?? 499;
   $("productStatus").value = p?.status || "Active";
@@ -314,10 +315,27 @@ $("productForm").addEventListener("submit", async e => {
     });
 
     const name = $("name").value.trim();
-    const sku = $("sku").value.trim();
-    const price = Number($("price").value || 0);
-    const status = $("productStatus").value;
-    const description = $("description").value.trim();
+const category = $("category").value;
+const price = Number($("price").value || 0);
+const status = $("productStatus").value;
+const description = $("description").value.trim();
+
+let sku = $("sku").value.trim();
+
+if (!sku) {
+  const prefix = category === "TS" ? "BHK-TS-" : "BHK-HD-";
+
+  const existingNumbers = products
+    .filter(p => String(p.sku || "").startsWith(prefix))
+    .map(p => Number(String(p.sku || "").replace(prefix, "")))
+    .filter(n => !isNaN(n));
+
+  const nextNumber = existingNumbers.length
+    ? Math.max(...existingNumbers) + 1
+    : 1;
+
+  sku = prefix + String(nextNumber).padStart(3, "0");
+}
 
     if (!name || !sku) {
       throw new Error(
@@ -353,6 +371,7 @@ $("productForm").addEventListener("submit", async e => {
         doc(db, "products", editingId),
         {
           name,
+          category,
           sku,
           price,
           status,
@@ -374,6 +393,7 @@ $("productForm").addEventListener("submit", async e => {
 
       await setDoc(productRef, {
         name,
+        category
         sku,
         price,
         status,
