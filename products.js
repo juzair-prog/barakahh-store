@@ -4,6 +4,8 @@ import { getFirestore, collection, doc, addDoc, onSnapshot, updateDoc, deleteDoc
 import { firebaseConfig } from "./firebase-config.js";
 
 const ADMIN_EMAIL = "kmuhammedjuzair@gmail.com";
+const CLOUDINARY_CLOUD_NAME = "lls4diyv";
+const CLOUDINARY_UPLOAD_PRESET = "barakahh_products";
 const app = initializeApp(firebaseConfig), auth = getAuth(app), db = getFirestore(app);
 const $ = id => document.getElementById(id);
 let currentUser = null, products = [], editingId = null;
