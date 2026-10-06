@@ -81,7 +81,7 @@ function render(){
 }
 function openEditor(p=null){
   editingId=p?.id||null;$("editorCard").hidden=false;$("editorTitle").textContent=p?"Edit Product":"Add Product";$("formMessage").textContent="";
-  $("name").value=p?.name||"";$("sku").value=p?.sku||"";$("price").value=p?.price??499;$("productStatus").value=p?.status||"Active";$("description").value=p?.description||"";$("photos").value=(p?.photos||[]).join("\n");
+  $("name").value=p?.name||"";$("sku").value=p?.sku||"";$("price").value=p?.price??499;$("productStatus").value=p?.status||"Active";$("description").value=p?.description||"";
   $("variants").innerHTML="";const vars=p?.variants||{};const colours=Object.keys(vars);(colours.length?colours:["Black"]).forEach(c=>addColour(c,vars[c]||{}));$("editorCard").scrollIntoView({behavior:"smooth"});
 }
 function addColour(name="",stock={}){
