@@ -4,7 +4,7 @@ import { getFirestore, collection, doc, addDoc, onSnapshot, updateDoc, deleteDoc
 import { firebaseConfig } from "./firebase-config.js";
 
 const ADMIN_EMAIL = "kmuhammedjuzair@gmail.com";
-const CLOUDINARY_CLOUD_NAME = "lls4diyv";
+const CLOUDINARY_CLOUD_NAME = "l1sd4iyv";
 const CLOUDINARY_UPLOAD_PRESET = "barakahh_products";
 
 const app = initializeApp(firebaseConfig);
