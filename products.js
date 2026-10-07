@@ -393,7 +393,7 @@ if (!sku) {
 
       await setDoc(productRef, {
         name,
-        category
+        category,
         sku,
         price,
         status,
