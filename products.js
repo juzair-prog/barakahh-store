@@ -15,6 +15,7 @@ const $ = id => document.getElementById(id);
 
 let currentUser = null;
 let products = [];
+let editingId = null;
 let editingPhotoUrls = [];
 
 const SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
