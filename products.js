@@ -15,7 +15,7 @@ const $ = id => document.getElementById(id);
 
 let currentUser = null;
 let products = [];
-let editingId = null;
+let editingPhotoUrls = [];
 
 const SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 
@@ -205,10 +205,29 @@ function render() {
     $("productList").append(c);
   });
 }
+function getNextSku(category) {
+  const prefix = category === "TS" ? "BHK-TS-" : "BHK-HD-";
 
+  const existingNumbers = products
+    .filter(p => String(p.sku || "").startsWith(prefix))
+    .map(p => Number(String(p.sku || "").replace(prefix, "")))
+    .filter(n => !isNaN(n));
+
+  const nextNumber = existingNumbers.length
+    ? Math.max(...existingNumbers) + 1
+    : 1;
+
+  return prefix + String(nextNumber).padStart(3, "0");
+}
+
+function updateAutoSku() {
+  if (!editingId) {
+    $("sku").value = getNextSku($("category").value);
+  }
+}
 function openEditor(p = null) {
   editingId = p?.id || null;
-
+editingPhotoUrls = p ? [...(p.photos || [])] : [];
   $("editorCard").hidden = false;
   $("editorTitle").textContent =
     p ? "Edit Product" : "Add Product";
@@ -323,18 +342,8 @@ const description = $("description").value.trim();
 let sku = $("sku").value.trim();
 
 if (!sku) {
-  const prefix = category === "TS" ? "BHK-TS-" : "BHK-HD-";
-
-  const existingNumbers = products
-    .filter(p => String(p.sku || "").startsWith(prefix))
-    .map(p => Number(String(p.sku || "").replace(prefix, "")))
-    .filter(n => !isNaN(n));
-
-  const nextNumber = existingNumbers.length
-    ? Math.max(...existingNumbers) + 1
-    : 1;
-
-  sku = prefix + String(nextNumber).padStart(3, "0");
+  sku = getNextSku(category);
+  $("sku").value = sku;
 }
 
     if (!name || !sku) {
@@ -355,17 +364,13 @@ if (!sku) {
     let photoUrls = [];
 
     if (editingId) {
-      const existingProduct =
-        products.find(p => p.id === editingId);
+  photoUrls = [...editingPhotoUrls];
 
-      photoUrls = [
-        ...(existingProduct?.photos || [])
-      ];
-
-      if (files.length) {
-        const newUrls = await uploadPhotos(files);
-        photoUrls.push(...newUrls);
-      }
+  if (files.length) {
+    const newUrls = await uploadPhotos(files);
+    photoUrls.push(...newUrls);
+  }
+}
 
       await updateDoc(
         doc(db, "products", editingId),
@@ -447,7 +452,7 @@ async function removeProduct(p) {
 
 function closeEditor() {
   editingId = null;
-
+editingPhotoUrls = [];
   $("editorCard").hidden = true;
 
   $("productForm").reset();
@@ -461,6 +466,8 @@ function closeEditor() {
 }
 
 $("addProduct").onclick = () => openEditor();
+
+$("category").onchange = updateAutoSku;
 
 $("addColour").onclick = () => addColour();
 
