@@ -370,7 +370,6 @@ if (!sku) {
     const newUrls = await uploadPhotos(files);
     photoUrls.push(...newUrls);
   }
-}
 
       await updateDoc(
         doc(db, "products", editingId),
