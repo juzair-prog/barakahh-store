@@ -184,3 +184,105 @@ footer { padding: 40px 20px; color: #777; text-align: center; }
 @media (max-width: 699px) {
   .order-history-actions .button { flex: 1 1 140px; }
 }
+/* BARAKAHH ADMIN — RESPONSIVE UI IMPROVEMENTS */
+
+.dashboard {
+width: 100%;
+max-width: 1200px;
+margin: 0 auto;
+padding: 32px 24px;
+}
+
+.grid {
+grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.orders-list {
+grid-template-columns: minmax(0, 1fr);
+}
+
+.order-card {
+min-width: 0;
+overflow-wrap: anywhere;
+}
+
+/* Desktop Order History */
+@media (min-width: 700px) {
+.order-card–readonly {
+grid-template-columns: repeat(3, minmax(0, 1fr));
+align-items: start;
+gap: 14px 20px;
+}
+
+.order-card–readonly h3,
+.order-card–readonly .order-history-actions,
+.order-card–readonly .order-history-editor {
+grid-column: 1 / -1;
+}
+
+.order-card–readonly p {
+min-width: 0;
+margin: 4px 0;
+overflow-wrap: anywhere;
+}
+
+.order-form {
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 20px;
+}
+
+.order-form label,
+.order-form input,
+.order-form select,
+.order-form textarea {
+min-width: 0;
+}
+}
+
+/* Mobile */
+@media (max-width: 699px) {
+.dashboard {
+padding: 24px 14px;
+}
+
+.grid {
+grid-template-columns: minmax(0, 1fr);
+}
+
+.order-form {
+grid-template-columns: minmax(0, 1fr);
+}
+
+.order-card–readonly {
+display: block;
+}
+
+.order-card–readonly p {
+margin: 10px 0;
+overflow-wrap: anywhere;
+}
+
+.order-card h3 {
+font-size: 20px;
+}
+
+.order-card .button {
+width: 100%;
+}
+
+.order-history-actions {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+}
+
+.order-history-actions .button {
+flex: 1 1 140px;
+}
+
+.nav {
+padding: 12px 14px;
+flex-wrap: wrap;
+gap: 12px;
+}
+}
