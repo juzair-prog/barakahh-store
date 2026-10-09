@@ -226,6 +226,35 @@ function updateAutoSku() {
     $("sku").value = getNextSku($("category").value);
   }
 }
+function renderExistingPhotos(urls = []) {
+  const box = $("existingPhotos");
+  box.innerHTML = "";
+
+  if (!urls.length) {
+    box.hidden = true;
+    return;
+  }
+
+  const title = document.createElement("p");
+  title.className = "muted";
+  title.textContent = "Existing photos";
+  box.append(title);
+
+  urls.forEach(url => {
+    const wrap = document.createElement("div");
+    wrap.className = "existing-photo";
+
+    const img = document.createElement("img");
+    img.src = url;
+    img.alt = "Product photo";
+    img.loading = "lazy";
+
+    wrap.append(img);
+    box.append(wrap);
+  });
+
+  box.hidden = false;
+}
 function openEditor(p = null) {
   editingId = p?.id || null;
 editingPhotoUrls = p ? [...(p.photos || [])] : [];
@@ -241,6 +270,7 @@ editingPhotoUrls = p ? [...(p.photos || [])] : [];
   $("price").value = p?.price ?? 499;
   $("productStatus").value = p?.status || "Active";
   $("description").value = p?.description || "";
+  renderExistingPhotos(editingPhotoUrls);
 
   $("variants").innerHTML = "";
 
@@ -453,6 +483,7 @@ async function removeProduct(p) {
 function closeEditor() {
   editingId = null;
 editingPhotoUrls = [];
+  renderExistingPhotos([]);
   $("editorCard").hidden = true;
 
   $("productForm").reset();
