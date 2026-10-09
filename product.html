@@ -39,7 +39,7 @@ input,textarea,select{width:100%;margin-top:7px;background:var(--card2);border:1
 <label>Price (₹)<input id="price" type="number" min="0" value="499" required></label>
 <label>Status<select id="productStatus"><option>Active</option><option>Hidden</option><option>Out of Stock</option></select></label>
 <label class="full">Description<textarea id="description" maxlength="1000"></textarea></label>
-<label class="full">Product Photos<input id="photos" type="file" accept="image/*" multiple></label>
+<label class="full">Product Photos<input id="photos" type="file" accept="image/*" multiple><div id="existingPhotos" class="existing-photos" hidden></div></label>
 <div class="full"><label>Colour & size stock</label><div id="variants"></div><button type="button" id="addColour" style="margin-top:10px">+ Add Colour</button></div>
 </div><div class="form-actions"><button type="button" id="cancelEdit">Cancel</button><button type="submit" class="primary" id="saveProduct">Save Product</button></div><p id="formMessage" class="muted"></p></form>
 </section></main>
