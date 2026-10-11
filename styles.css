@@ -62,12 +62,15 @@ a { color: inherit; }
 .button:disabled { opacity: .6; cursor: not-allowed; }
 
 .card {
-  max-width: 900px;
+  width: 100%;
+  max-width: 1200px;
   margin: 20px auto;
   padding: 28px;
-  border: 1px solid #2b2b2d;
-  border-radius: 24px;
-  background: #131315;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
 }
 
 .product-image {
