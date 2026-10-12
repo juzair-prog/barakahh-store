@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Barakahh — Product Management</title>
+<style>
+:root{
+  color-scheme:light;--bg:#f6f7f9;--surface:#fff;--surface-soft:#f8f9fb;
+  --text:#111827;--muted:#6b7280;--line:#e5e7eb;--nav:#fff;
+  --accent:#111827;--accent-text:#fff;--green:#22c55e;--red:#ef4444;
+  --amber:#f59e0b;--blue:#3882f6;--shadow:0 3px 12px rgba(17,24,39,.045);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font:14px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit}
+button{min-height:40px;padding:10px 14px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--text);font-weight:650;cursor:pointer;transition:.15s}
+button:hover{border-color:#aab2bf;transform:translateY(-1px)}
+button:disabled{opacity:.55;cursor:not-allowed;transform:none}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #3882f633;outline-offset:2px}
+.primary{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
+.danger{color:var(--red);border-color:#fee2e2;background:#fff7f7}
+a{color:inherit;text-decoration:none}
+.app{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:24px 14px 16px;background:var(--nav);border-right:1px solid var(--line)}
+.brand{padding:0 12px 26px;font-size:17px;font-weight:900;letter-spacing:.08em}
+.nav-label{padding:0 12px 8px;color:#9ca3af;font-size:10px;font-weight:800;letter-spacing:.13em}
+.side-link{display:flex;align-items:center;gap:11px;padding:11px 12px;margin:2px 0;border-radius:8px;color:#4b5563;font-weight:650;font-size:13px}
+.side-link .ico{width:18px;text-align:center;font-size:15px}
+.side-link:hover{background:#f3f4f6}
+.side-link.active{background:#111827;color:#fff}
+.sidebar-bottom{margin-top:auto}
+.workspace{min-width:0}
+.topbar{height:68px;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:0 clamp(18px,3vw,36px);background:#fff;border-bottom:1px solid var(--line)}
+.topbar-title{font-weight:800;letter-spacing:.03em}
+.top-actions{display:flex;align-items:center;gap:8px}
+main{width:100%;max-width:1500px;margin:0 auto;padding:28px clamp(18px,3vw,36px) 56px}
+.hero{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:24px}
+.eyebrow{margin:0 0 7px;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+h1,h2,h3,p{overflow-wrap:anywhere}
+h1{margin:0 0 7px;font-size:clamp(27px,3vw,34px);line-height:1.15;letter-spacing:-.045em}
+h2{margin:0;font-size:21px;line-height:1.25;letter-spacing:-.025em}
+h3{margin:0;font-size:15px;line-height:1.3}
+.muted{color:var(--muted)}
+#status{margin:7px 0 0;font-size:12px}
+.card{padding:22px;background:var(--surface);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);margin-bottom:20px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.toolbar>div:last-child{display:flex;align-items:center;gap:9px;min-width:min(100%,350px)}
+.search{width:245px;max-width:100%;height:40px;margin:0;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--text)}
+.product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:22px}
+.product-card{display:flex;flex-direction:column;min-width:0;padding:12px;border:1px solid var(--line);border-radius:11px;background:#fff;transition:box-shadow .15s,border-color .15s}
+.product-card:hover{border-color:#cbd5e1;box-shadow:0 7px 20px #1118270b}
+.product-top{display:flex;align-items:flex-start;justify-content:space-between;gap:9px}
+.product-top>div{min-width:0}
+.product-top h3{margin-bottom:5px}
+.badge{display:inline-flex;align-items:center;justify-content:center;padding:4px 7px;border:1px solid #e5e7eb;border-radius:6px;background:#f9fafb;color:#4b5563;font-size:10px;font-weight:750;white-space:nowrap}
+.price{margin:11px 0 13px;font-size:21px;font-weight:850;letter-spacing:-.04em}
+.variant{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-top:1px solid #f0f1f3;font-size:12px}
+.variant span:first-child{color:#4b5563}
+.variant span:last-child{font-weight:650;white-space:nowrap}
+.ok{color:#16a34a}.low{color:#d97706}.zero{color:#dc2626}
+.product-card>.muted{font-size:12px;margin:10px 0}
+.actions{display:flex;gap:7px;margin-top:auto;padding-top:14px}
+.actions button{flex:1;min-width:0;padding:9px 8px;font-size:12px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+label{display:block;min-width:0;color:#374151;font-size:12px;font-weight:700}
+input,textarea,select{display:block;width:100%;min-width:0;min-height:41px;margin-top:6px;padding:10px 11px;border:1px solid #dfe3e9;border-radius:8px;background:#fff;color:#111827}
+input:focus,textarea:focus,select:focus{border-color:#8baef8}
+input[type=file]{padding:8px;background:#f9fafb}
+textarea{min-height:90px;resize:vertical}
+.full{grid-column:1/-1}
+.colour-block{margin-top:10px;padding:13px;border:1px solid var(--line);border-radius:10px;background:#fafbfc}
+.colour-head{display:flex;align-items:flex-end;gap:9px}
+.colour-head label{flex:1}
+.size-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:10px}
+.form-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-top:20px}
+#formMessage{margin:10px 0 0;font-size:12px}
+.existing-photos{display:flex;flex-wrap:wrap;gap:9px;margin-top:10px}
+.existing-photo{width:88px;height:88px;overflow:hidden;border:1px solid var(--line);border-radius:8px;background:#f3f4f6}
+.existing-photo img{display:block;width:100%;height:100%;object-fit:cover}
+.empty{padding:32px 15px;text-align:center;color:var(--muted);border:1px dashed #d7dce4;border-radius:10px;background:#fafbfc}
+[hidden]{display:none!important}
+@media(max-width:1150px){.app{grid-template-columns:190px minmax(0,1fr)}.product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.sidebar{padding-inline:10px}}
+@media(max-width:800px){
+ .app{grid-template-columns:1fr}
+ .sidebar{position:static;height:auto;display:block;padding:12px 14px;border-right:0;border-bottom:1px solid var(--line)}
+ .brand{display:inline-block;padding:4px 8px 12px;font-size:15px}
+ .nav-label,.sidebar-bottom{display:none}
+ .sidebar nav{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px}
+ .side-link{flex:0 0 auto;margin:0;padding:9px 11px;font-size:12px}
+ .side-link .ico{width:auto}
+ .topbar{height:54px;padding:0 18px}
+ main{padding:22px 16px 38px}
+ .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .card{padding:17px}
+}
+@media(max-width:520px){
+ .hero{display:block}
+ .top-actions button{min-height:36px;padding:8px 10px;font-size:12px}
+ .toolbar{align-items:stretch}
+ .toolbar>div:first-child{width:100%}
+ .toolbar>div:last-child{display:grid;grid-template-columns:minmax(0,1fr);min-width:0;width:100%}
+ .search{width:100%}
+ .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:16px}
+ .product-card{padding:10px;border-radius:9px}
+ .product-top{display:block}
+ .product-top .badge{margin-top:7px}
+ .price{font-size:18px;margin:9px 0}
+ .variant{font-size:11px;gap:4px}
+ .actions{flex-direction:column;gap:6px;padding-top:10px}
+ .actions button{width:100%}
+ .form-grid{grid-template-columns:minmax(0,1fr);gap:14px}
+ .full{grid-column:auto}
+ .size-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .form-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .form-actions button{width:100%}
+}
+@media(max-width:350px){.product-grid{grid-template-columns:minmax(0,1fr)}.side-link{font-size:11px;padding:8px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">BARAKAHH</div>
+  <div class="nav-label">WORKSPACE</div>
+  <nav aria-label="Admin navigation">
+    <a class="side-link" href="admin-dashboard.html"><span class="ico">▦</span>Dashboard</a>
+    <a class="side-link" href="admin-dashboard.html"><span class="ico">＋</span>Manual Order</a>
+    <a class="side-link" href="admin-dashboard.html"><span class="ico">▤</span>Order History</a>
+    <a class="side-link active" href="product.html" aria-current="page"><span class="ico">◈</span>Product Management</a>
+  </nav>
+  <div class="sidebar-bottom"><a class="side-link" href="#" id="sideLogout"><span class="ico">↪</span>Sign out</a></div>
+</aside>
+<div class="workspace">
+<header class="topbar"><div class="topbar-title">Product Management</div><div class="top-actions"><button id="backButton" type="button">Dashboard</button><button id="logout" type="button">Sign out</button></div></header>
+<main>
+<section class="hero">
+  <div><p class="eyebrow">BARAKAHH / CATALOG</p><h1>Products</h1><p class="muted">Manage products, colour/size stock and customer visibility.</p><p id="status" class="muted">Checking authentication…</p></div>
+</section>
+<section class="card">
+  <div class="toolbar">
+    <div><p class="eyebrow">YOUR STORE</p><h2>All Products</h2></div>
+    <div><input id="search" class="search" placeholder="Search products…" aria-label="Search products"><button id="addProduct" class="primary" type="button">+ Add Product</button></div>
+  </div>
+  <div id="productList" class="product-grid"><div class="empty">Loading products…</div></div>
+</section>
+<section class="card" id="editorCard" hidden>
+  <p class="eyebrow">PRODUCT EDITOR</p><h2 id="editorTitle">Add Product</h2>
+  <form id="productForm">
+    <div class="form-grid">
+      <label>Product name<input id="name" required maxlength="100" placeholder="Faith Print"></label>
+      <label>Category<select id="category"><option value="TS">T-Shirt</option><option value="HD">Hoodie</option></select></label>
+      <label>SKU / Product ID<input id="sku" readonly required maxlength="40" placeholder="BHK-TS-001"></label>
+      <label>Price (₹)<input id="price" type="number" min="0" value="499" required></label>
+      <label>Status<select id="productStatus"><option>Active</option><option>Hidden</option><option>Out of Stock</option></select></label>
+      <label class="full">Description<textarea id="description" maxlength="1000"></textarea></label>
+      <label class="full">Product Photos<input id="photos" type="file" accept="image/*" multiple><div id="existingPhotos" class="existing-photos" hidden></div></label>
+      <div class="full"><label>Colour & size stock</label><div id="variants"></div><button type="button" id="addColour" style="margin-top:10px">+ Add Colour</button></div>
+    </div>
+    <div class="form-actions"><button type="button" id="cancelEdit">Cancel</button><button type="submit" class="primary" id="saveProduct">Save Product</button></div>
+    <p id="formMessage" class="muted"></p>
+  </form>
+</section>
+</main>
+</div>
+</div>
+<script type="module" src="./products.js"></script>
+<script>
+document.getElementById("sideLogout")?.addEventListener("click", function(e) {
+  e.preventDefault();
+  document.getElementById("logout")?.click();
+});
+</script>
+</body>
+</html>
