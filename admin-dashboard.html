@@ -174,6 +174,24 @@
       <p class="chart-footnote">Live values update automatically when Firebase order data changes.</p>
     </section>
 
+    <section class="card" id="recentOrderActivity"
+             data-admin-section="dashboard">
+      <div class="admin-section-heading">
+        <div>
+          <h2>Recent Order Activity</h2>
+          <p class="muted">Your latest 3 orders</p>
+        </div>
+        <button class="recent-view-all" id="viewAllRecentOrders"
+                type="button">
+          View All
+        </button>
+      </div>
+
+      <div id="recentOrdersList" aria-live="polite">
+        <p class="muted">Loading recent orders…</p>
+      </div>
+    </section>
+
     <section class="card" id="manualSection" data-admin-section="manual">
       <p class="eyebrow">MANUAL ORDERS</p><h2>Add Manual Order</h2>
       <p class="muted">For WhatsApp, Instagram, phone and other offline orders. The system generates the next BKR order ID automatically.</p>
