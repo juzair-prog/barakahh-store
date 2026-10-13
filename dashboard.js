@@ -52,6 +52,7 @@ function startOrdersListener() {
     updateStats();
     renderOrders();
     renderOrderHistory();
+    renderDashboardRecentOrders();
   }, (error) => {
     console.error(error);
     ordersList.innerHTML =
@@ -70,6 +71,62 @@ function updateStats() {
       ? (allOrders[0].orderId || allOrders[0].id)
       : "—";
 }
+
+function renderDashboardRecentOrders() {
+  const container = document.getElementById("recentOrdersList");
+  if (!container) return;
+
+  container.replaceChildren();
+
+  const recent = allOrders.slice(0, 3);
+
+  if (!recent.length) {
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.textContent = "No orders yet.";
+    container.appendChild(empty);
+    return;
+  }
+
+  recent.forEach((order) => {
+    const row = document.createElement("div");
+    row.className = "recent-order-row";
+
+    const orderId = document.createElement("span");
+    orderId.className = "recent-order-id";
+    orderId.textContent = order.orderId || order.id;
+
+    const time = document.createElement("span");
+    time.className = "recent-order-time";
+    const date = order.createdAt?.toDate?.();
+
+    time.textContent = date
+      ? date.toLocaleString("en-IN", {
+          day: "numeric",
+          month: "short",
+          hour: "numeric",
+          minute: "2-digit"
+        })
+      : "Time unavailable";
+
+    const status = document.createElement("span");
+    status.className = "recent-order-status";
+    if (order.status === "Packed") {
+      status.classList.add("packed");
+    }
+    status.textContent = order.status || "Pending";
+
+    row.append(orderId, time, status);
+    container.appendChild(row);
+  });
+}
+
+document.getElementById("viewAllRecentOrders")
+  ?.addEventListener("click", () => {
+    if (typeof window.applyAdminSection === "function") {
+      window.applyAdminSection("manage");
+    }
+  });
 
 manualOrderForm.addEventListener("submit", async (event) => {
   event.preventDefault();
