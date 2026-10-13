@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f6f7f9">
+  <title>Barakahh Admin Workspace</title>
+  <link rel="stylesheet" href="./admin-panel.css">
+</head>
+<body>
+  <div class="admin-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" data-view="dashboard" aria-label="Barakahh home">BARAKAHH<span>ADMIN</span></a>
+      <p class="side-label">WORKSPACE</p>
+      <nav class="side-nav" aria-label="Admin sections">
+        <button class="nav-item active" type="button" data-view="dashboard"><span class="nav-icon">▦</span><span>Dashboard</span></button>
+        <button class="nav-item" type="button" data-view="manage"><span class="nav-icon">▣</span><span>Manage Orders</span></button>
+        <button class="nav-item" type="button" data-view="manual"><span class="nav-icon">＋</span><span>Manual Order</span></button>
+        <button class="nav-item" type="button" data-view="history"><span class="nav-icon">▤</span><span>Order History</span></button>
+        <button class="nav-item" type="button" data-view="products"><span class="nav-icon">◈</span><span>Product Management</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <p class="connection"><span class="connection-dot"></span> Existing Firebase pages</p>
+        <button class="nav-item signout" id="signOut" type="button"><span class="nav-icon">↪</span><span>Sign out</span></button>
+      </div>
+    </aside>
+    <div class="main-area">
+      <header class="topbar">
+        <div class="mobile-brand">BARAKAHH <span>ADMIN</span></div>
+        <div class="topbar-title" id="pageTitle">Dashboard</div>
+        <div class="topbar-actions"><span class="live-pill"><span class="connection-dot"></span> Store admin</span><button id="mobileMenu" class="mobile-menu" type="button" aria-label="Open navigation">☰</button></div>
+      </header>
+      <main class="content">
+        <section class="welcome"><div><p class="eyebrow">BARAKAHH / WORKSPACE</p><h1 id="welcomeTitle">Dashboard</h1><p class="subtext">Manage your orders, products and inventory from one workspace.</p></div><span class="welcome-mark">B.</span></section>
+        <section class="panel-frame-wrap" aria-label="Admin workspace content"><div class="frame-loading" id="frameLoading"><span class="spinner"></span><span>Opening workspace…</span></div><iframe id="workspaceFrame" title="Barakahh admin section" src="./admin-dashboard.html#dashboard" loading="eager"></iframe></section>
+        <p class="footer-note">BARAKAHH ADMIN <span>·</span> Keep your store moving.</p>
+      </main>
+    </div>
+  </div>
+  <script src="./admin-panel.js"></script>
+</body>
+</html>
