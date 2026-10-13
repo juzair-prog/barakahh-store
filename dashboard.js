@@ -53,6 +53,11 @@ function startOrdersListener() {
     renderOrders();
     renderOrderHistory();
     renderDashboardRecentOrders();
+window.dispatchEvent(
+  new CustomEvent("barakahh:orders-updated", {
+    detail: allOrders
+  })
+);
   }, (error) => {
     console.error(error);
     ordersList.innerHTML =
