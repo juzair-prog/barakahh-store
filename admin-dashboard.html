@@ -17,6 +17,118 @@
     .chart-fill{display:block;width:100%;height:0;min-height:3px;background:#111827;border-radius:6px 6px 0 0;transition:height .4s ease}
     .chart-footnote{font-size:12px;color:#6b7280;margin:14px 0 0}
     @media(max-width:520px){.chart-summary{grid-template-columns:1fr;gap:9px}.chart-tile{padding:12px}.chart-track{height:70px}.chart-number{font-size:22px}}
+  /* Dashboard-only: Premium pastel overview */
+#dashboardSection .grid .stat {
+  min-width: 0;
+  border: 1px solid #e5eaf2;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: none;
+}
+
+#dashboardSection .grid .stat:nth-child(1) {
+  background: #edf4ff;
+  border-color: #e0ebff;
+}
+
+#dashboardSection .grid .stat:nth-child(2) {
+  background: #fff4e8;
+  border-color: #ffead5;
+}
+
+#dashboardSection .grid .stat:nth-child(3) {
+  background: #fff0f0;
+  border-color: #ffe2e2;
+}
+
+#dashboardSection .grid .stat:nth-child(4) {
+  background: #f2efff;
+  border-color: #e8e1ff;
+}
+
+#dashboardSection #lastOrder {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+#dashboardSection .grid .stat strong {
+  font-size: clamp(20px, 4vw, 30px);
+}
+
+#dashboardSection + section .chart-tile {
+  border-radius: 14px;
+  background: #f8faff;
+}
+
+#dashboardSection + section .chart-fill {
+  background: #557bbd;
+}
+
+#recentOrderActivity .recent-order-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid #edf0f5;
+}
+
+#recentOrderActivity .recent-order-row:last-child {
+  border-bottom: 0;
+}
+
+#recentOrderActivity .recent-order-id {
+  min-width: 0;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+#recentOrderActivity .recent-order-time {
+  color: #747b89;
+  font-size: 13px;
+}
+
+#recentOrderActivity .recent-order-status {
+  padding: 5px 9px;
+  border-radius: 8px;
+  background: #e5f8eb;
+  color: #17683b;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+#recentOrderActivity .recent-order-status.packed {
+  background: #e6efff;
+  color: #214fa5;
+}
+
+#recentOrderActivity .recent-view-all {
+  border: 1px solid #e1e5ec;
+  border-radius: 9px;
+  background: #fff;
+  color: #17191f;
+  padding: 8px 12px;
+  font-weight: 600;
+}
+
+@media (max-width: 520px) {
+  #recentOrderActivity .recent-order-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 5px 10px;
+  }
+
+  #recentOrderActivity .recent-order-time {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  #recentOrderActivity .recent-order-status {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
+
   </style>
 </head>
 <body>
