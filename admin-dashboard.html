@@ -129,6 +129,246 @@
   }
 }
 
+/* Dashboard Order Activity chart */
+.activity-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.activity-heading .eyebrow {
+  margin-bottom: 8px;
+}
+
+.activity-heading h2 {
+  margin-top: 0;
+}
+
+#activityPeriod,
+.custom-date-range input,
+#applyActivityDates {
+  min-height: 42px;
+  border: 1px solid #dce3ed;
+  border-radius: 10px;
+  padding: 9px 12px;
+  background: #fff;
+  color: #172033;
+  font: inherit;
+}
+
+.custom-date-range {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: end;
+  margin: 18px 0;
+}
+
+.custom-date-range[hidden] {
+  display: none !important;
+}
+
+.custom-date-range label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  color: #687386;
+}
+
+#applyActivityDates {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.activity-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 22px 0 10px;
+  color: #667085;
+  font-size: 13px;
+}
+
+.activity-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.total-dot {
+  background: #294a7a;
+}
+
+.manual-dot {
+  background: #a9c5e8;
+}
+
+.activity-chart {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(54px, 1fr);
+  gap: 8px;
+  align-items: stretch;
+  overflow-x: auto;
+  padding: 12px 4px 8px;
+  border-bottom: 1px solid #d9e0e9;
+  background: repeating-linear-gradient(
+    to top,
+    transparent 0,
+    transparent 39px,
+    #e9edf3 40px,
+    transparent 41px
+  );
+  scrollbar-width: thin;
+}
+
+.activity-day {
+  display: grid;
+  grid-template-rows: 18px 150px auto;
+  gap: 8px;
+  min-width: 0;
+  text-align: center;
+}
+
+.activity-day-total {
+  font-size: 12px;
+  font-weight: 700;
+  color: #526078;
+}
+
+.activity-bars {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 5px;
+  height: 150px;
+  min-width: 0;
+}
+
+.activity-bar {
+  width: min(34%, 22px);
+  min-width: 7px;
+  border-radius: 5px 5px 0 0;
+  transition: height .2s ease;
+}
+
+.activity-bar.total {
+  background: #294a7a;
+}
+
+.activity-bar.manual {
+  background: #a9c5e8;
+}
+
+.activity-day-label {
+  font-size: 11px;
+  color: #687386;
+  white-space: nowrap;
+}
+
+.activity-empty {
+  grid-column: 1 / -1;
+  padding: 28px 10px;
+  text-align: center;
+  color: #687386;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 520px) {
+  .activity-heading {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  #activityPeriod {
+    width: 100%;
+  }
+
+  .custom-date-range label,
+  .custom-date-range input,
+  #applyActivityDates {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .activity-chart {
+    grid-auto-columns: 48px;
+    gap: 6px;
+  }
+
+  .activity-day {
+    grid-template-rows: 18px 120px auto;
+  }
+
+  .activity-bars {
+    height: 120px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  #orderActivitySection {
+    color: #f3f5f9;
+    background: #191d24;
+    border-color: #343b47;
+  }
+
+  #orderActivitySection .section-note,
+  #orderActivitySection .activity-legend,
+  #orderActivitySection .activity-day-label,
+  #orderActivitySection .activity-day-total {
+    color: #b8c1d0;
+  }
+
+  #orderActivitySection #activityPeriod,
+  #orderActivitySection .custom-date-range input,
+  #orderActivitySection #applyActivityDates {
+    background: #242b36;
+    color: #f3f5f9;
+    border-color: #414b5a;
+  }
+
+  #orderActivitySection .activity-chart {
+    border-color: #414b5a;
+    background: repeating-linear-gradient(
+      to top,
+      transparent 0,
+      transparent 39px,
+      #303744 40px,
+      transparent 41px
+    );
+  }
+
+  #orderActivitySection .total-dot,
+  #orderActivitySection .activity-bar.total {
+    background: #8bb7ff;
+  }
+
+  #orderActivitySection .manual-dot,
+  #orderActivitySection .activity-bar.manual {
+    background: #d0e2ff;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -150,29 +390,55 @@
       </div>
     </section>
 
-    <section class="card" data-admin-section="dashboard">
-      <p class="eyebrow">ORDER SNAPSHOT</p>
-      <h2>Order Activity</h2>
-      <p class="section-note">A quick visual summary of the order data currently shown in this workspace.</p>
-      <div class="chart-summary" role="group" aria-label="Live order statistics chart">
-        <div class="chart-tile">
-          <div class="chart-tile-top"><span>Total orders</span><span>All</span></div>
-          <strong class="chart-number" id="totalOrdersValue">0</strong>
-          <div class="chart-track"><span class="chart-fill" id="totalOrdersBar"></span></div>
-        </div>
-        <div class="chart-tile">
-          <div class="chart-tile-top"><span>Manual orders</span><span>Offline</span></div>
-          <strong class="chart-number" id="manualOrdersValue">0</strong>
-          <div class="chart-track"><span class="chart-fill" id="manualOrdersBar"></span></div>
-        </div>
-        <div class="chart-tile">
-          <div class="chart-tile-top"><span>Cancelled</span><span>Cancelled</span></div>
-          <strong class="chart-number" id="cancelledOrdersValue">0</strong>
-          <div class="chart-track"><span class="chart-fill" id="cancelledOrdersBar"></span></div>
-        </div>
-      </div>
-      <p class="chart-footnote">Live values update automatically when Firebase order data changes.</p>
-    </section>
+  
+<section class="card activity-card" data-admin-section="dashboard" id="orderActivitySection">
+  <div class="activity-heading">
+    <div>
+      <p class="eyebrow">ORDER ACTIVITY</p>
+      <h2>Orders over time</h2>
+      <p class="section-note">Total orders compared with manual orders</p>
+    </div>
+
+    <label class="activity-filter-label" for="activityPeriod">
+      <span class="sr-only">Select date range</span>
+      <select id="activityPeriod">
+        <option value="7">Last 7 Days</option>
+        <option value="30">Last 30 Days</option>
+        <option value="custom">Custom Date Range</option>
+      </select>
+    </label>
+  </div>
+
+  <div id="customDateRange" class="custom-date-range" hidden>
+    <label>
+      Start date
+      <input type="date" id="activityStartDate">
+    </label>
+    <label>
+      End date
+      <input type="date" id="activityEndDate">
+    </label>
+    <button type="button" id="applyActivityDates">Apply dates</button>
+  </div>
+
+  <div class="activity-legend">
+    <span><i class="legend-dot total-dot"></i>Total Orders</span>
+    <span><i class="legend-dot manual-dot"></i>Manual Orders</span>
+  </div>
+
+  <p id="activityChartSummary" class="section-note" aria-live="polite">
+    Waiting for live order data…
+  </p>
+
+  <div id="activityChart" class="activity-chart" role="img"
+       aria-label="Daily grouped bar chart comparing total and manual orders">
+  </div>
+
+  <p id="activityChartNote" class="chart-footnote">
+    Counts use orders with a valid creation timestamp.
+  </p>
+</section>
+
 
     <section class="card" id="recentOrderActivity"
              data-admin-section="dashboard">
@@ -240,24 +506,212 @@
   </script>
   <script type="module" src="dashboard.js"></script>
   <script>
-    // Update dashboard bars from the live stat values written by dashboard.js.
-    (function(){
-      const ids = ["orderCount","manualCount","cancelledCount"];
-      const bars = ["totalOrdersBar","manualOrdersBar","cancelledOrdersBar"];
-      const valueIds = ["totalOrdersValue","manualOrdersValue","cancelledOrdersValue"];
-      function update(){
-        const values = ids.map(id => Number(document.getElementById(id)?.textContent || 0));
-        const max = Math.max(values[0], 1);
-        bars.forEach((id,i) => {
-          const bar = document.getElementById(id);
-          const number = document.getElementById(valueIds[i]);
-          if (number) number.textContent = String(values[i]);
-          if (bar) bar.style.height = (values[i] === 0 ? 3 : Math.max(8, values[i] / max * 100)) + "%";
-        });
+    (function () {
+  const periodSelect = document.getElementById("activityPeriod");
+  const customRange = document.getElementById("customDateRange");
+  const startInput = document.getElementById("activityStartDate");
+  const endInput = document.getElementById("activityEndDate");
+  const applyButton = document.getElementById("applyActivityDates");
+  const chart = document.getElementById("activityChart");
+  const summary = document.getElementById("activityChartSummary");
+  const note = document.getElementById("activityChartNote");
+
+  if (!periodSelect || !chart) return;
+
+  let orders = [];
+  let customDatesApplied = false;
+
+  function localKey(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+
+  function parseOrderDate(order) {
+    const value = order.createdAt;
+    if (value && typeof value.toDate === "function") {
+      const date = value.toDate();
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+    if (value instanceof Date && !Number.isNaN(value.getTime())) {
+      return value;
+    }
+    return null;
+  }
+
+  function shiftDays(date, amount) {
+    const result = new Date(date);
+    result.setDate(result.getDate() + amount);
+    return result;
+  }
+
+  function makeDateRange(start, end) {
+    const dates = [];
+    const cursor = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+    const last = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+
+    while (cursor <= last && dates.length < 366) {
+      dates.push(new Date(cursor));
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    return dates;
+  }
+
+  function renderChart() {
+    const today = new Date();
+    let start;
+    let end = new Date(today);
+
+    if (periodSelect.value === "custom") {
+      customRange.hidden = false;
+
+      if (!startInput.value || !endInput.value || !customDatesApplied) {
+        summary.textContent = "Choose a start and end date, then tap Apply dates.";
+        chart.replaceChildren();
+        return;
       }
-      ids.forEach(id => { const el = document.getElementById(id); if(el) new MutationObserver(update).observe(el,{childList:true,characterData:true,subtree:true}); });
-      update();
-    })();
-  </script>
+
+      start = new Date(`${startInput.value}T00:00:00`);
+      end = new Date(`${endInput.value}T00:00:00`);
+
+      if (Number.isNaN(start.getTime()) ||
+          Number.isNaN(end.getTime()) || start > end) {
+        summary.textContent = "Please choose a valid date range.";
+        chart.replaceChildren();
+        return;
+      }
+    } else {
+      customRange.hidden = true;
+      const days = Number(periodSelect.value) || 7;
+      start = shiftDays(today, -(days - 1));
+      start.setHours(0, 0, 0, 0);
+      end.setHours(0, 0, 0, 0);
+    }
+
+    const dates = makeDateRange(start, end);
+    const totals = new Map(dates.map(date => [localKey(date), {
+      total: 0,
+      manual: 0
+    }]));
+
+    let missingDates = 0;
+
+    orders.forEach(order => {
+      const created = parseOrderDate(order);
+      if (!created) {
+        missingDates++;
+        return;
+      }
+
+      const key = localKey(created);
+      const bucket = totals.get(key);
+      if (!bucket) return;
+
+      bucket.total++;
+      if (order.source === "manual") bucket.manual++;
+    });
+
+    chart.replaceChildren();
+
+    const max = Math.max(
+      1,
+      ...Array.from(totals.values()).map(item => item.total)
+    );
+
+    let periodTotal = 0;
+    let periodManual = 0;
+
+    dates.forEach(date => {
+      const key = localKey(date);
+      const item = totals.get(key);
+      periodTotal += item.total;
+      periodManual += item.manual;
+
+      const day = document.createElement("div");
+      day.className = "activity-day";
+
+      const count = document.createElement("div");
+      count.className = "activity-day-total";
+      count.textContent = String(item.total);
+      count.title = `${item.total} total orders`;
+
+      const bars = document.createElement("div");
+      bars.className = "activity-bars";
+
+      [
+        { value: item.total, type: "total", label: "Total orders" },
+        { value: item.manual, type: "manual", label: "Manual orders" }
+      ].forEach(entry => {
+        const bar = document.createElement("span");
+        bar.className = `activity-bar ${entry.type}`;
+        bar.style.height = entry.value
+          ? `${Math.max(4, entry.value / max * 100)}%`
+          : "0%";
+        bar.title = `${entry.label}: ${entry.value}`;
+        bar.setAttribute("aria-label", `${entry.label}: ${entry.value}`);
+        bars.appendChild(bar);
+      });
+
+      const label = document.createElement("div");
+      label.className = "activity-day-label";
+      label.textContent = date.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short"
+      });
+
+      day.append(count, bars, label);
+      chart.appendChild(day);
+    });
+
+    if (!dates.length) {
+      const empty = document.createElement("p");
+      empty.className = "activity-empty";
+      empty.textContent = "No dates to display.";
+      chart.appendChild(empty);
+    }
+
+    summary.textContent =
+      `${periodTotal} total orders · ${periodManual} manual orders`;
+
+    note.textContent = missingDates
+      ? `${missingDates} order(s) without a valid creation timestamp are excluded from date-based totals.`
+      : "Counts use real order creation timestamps in your local time.";
+  }
+
+  function receiveOrders(event) {
+    orders = Array.isArray(event.detail) ? event.detail : [];
+    renderChart();
+  }
+
+  window.addEventListener("barakahh:orders-updated", receiveOrders);
+  periodSelect.addEventListener("change", () => {
+    customDatesApplied = false;
+
+    if (periodSelect.value === "custom") {
+      const today = new Date();
+      endInput.value = localKey(today);
+      startInput.value = localKey(shiftDays(today, -6));
+      customDatesApplied = true;
+    }
+
+    renderChart();
+  });
+
+  applyButton?.addEventListener("click", () => {
+    customDatesApplied = true;
+    renderChart();
+  });
+
+  startInput?.addEventListener("change", () => {
+    customDatesApplied = false;
+  });
+  endInput?.addEventListener("change", () => {
+    customDatesApplied = false;
+  });
+
+  renderChart();
+})();
+</script>
 </body>
 </html>
