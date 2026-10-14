@@ -63,7 +63,7 @@ style.textContent = `
   html,body{background:#f4f6f9!important;color:#111827!important}
   body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif!important}
   .nav,.sidebar,.topbar{display:none!important}
-  main,.dashboard{width:100%!important;max-width:none!important;margin:0!important;padding:16px!important}
+  main,.dashboard{display:block!important;width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;padding:16px!important;box-sizing:border-box!important}
   .hero{display:none!important}
   .card{border-radius:13px!important;box-shadow:none!important;margin-bottom:14px!important}
   @media(max-width:600px){main,.dashboard{padding:10px!important}.card{padding:14px!important}.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.order-form{grid-template-columns:minmax(0,1fr)!important}}
