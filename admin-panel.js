@@ -65,6 +65,29 @@ style.textContent = `
   .nav,.sidebar,.topbar{display:none!important}
   main,.dashboard{display:block!important;width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;padding:16px!important;box-sizing:border-box!important}
   .hero{display:none!important}
+  /* Product Management desktop layout */
+@media(min-width:801px){
+  body:has(#productList) main{
+    width:100%!important;
+    max-width:none!important;
+  }
+  body:has(#productList) .toolbar{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    flex-wrap:wrap!important;
+    gap:16px!important;
+  }
+  body:has(#productList) #productList{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:14px!important;
+    width:100%!important;
+  }
+  body:has(#productList) #editorCard{
+    width:100%!important;
+  }
+}
   .card{border-radius:13px!important;box-shadow:none!important;margin-bottom:14px!important}
   @media(max-width:600px){main,.dashboard{padding:10px!important}.card{padding:14px!important}.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.order-form{grid-template-columns:minmax(0,1fr)!important}}
 `;
