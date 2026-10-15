@@ -101,7 +101,7 @@ body:has(#productList) .workspace{
 }
   .card{border-radius:13px!important;box-shadow:none!important;margin-bottom:14px!important}
   @media(max-width:600px){main,.dashboard{padding:10px!important}.card{padding:14px!important}.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.order-form{grid-template-columns:minmax(0,1fr)!important}}
-';
+`;
 
 
         doc.head.appendChild(style);
