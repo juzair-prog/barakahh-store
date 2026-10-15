@@ -67,6 +67,17 @@ style.textContent = `
   .hero{display:none!important}
   /* Product Management desktop layout */
 @media(min-width:801px){
+body:has(#productList) .app{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+}
+
+body:has(#productList) .workspace{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+}
   body:has(#productList) main{
     width:100%!important;
     max-width:none!important;
@@ -90,7 +101,7 @@ style.textContent = `
 }
   .card{border-radius:13px!important;box-shadow:none!important;margin-bottom:14px!important}
   @media(max-width:600px){main,.dashboard{padding:10px!important}.card{padding:14px!important}.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.order-form{grid-template-columns:minmax(0,1fr)!important}}
-`;
+';
 
 
         doc.head.appendChild(style);
