@@ -392,62 +392,98 @@ function renderOrders() {
   Delivered orders are locked and show only "✓ Completed".
   Cancelled orders remain in history and can still be edited/deleted.
 */
+
 function renderOrderHistory() {
-  if (!allOrders.length) {
-    orderHistoryList.innerHTML =
-      `<p class="muted">No order history yet.</p>`;
-    return;
-  }
+  if (!orderHistoryList) return;
 
-  orderHistoryList.innerHTML = "";
+  orderHistoryList.replaceChildren();
 
-  const historyOrders = allOrders.filter(
-    (order) =>
-      order.status === "Shipped" ||
-      order.status === "Local Delivery" ||
-      order.status === "Delivered" ||
-      order.status === "Cancelled"
+  const historyOrders = allOrders.filter((order) =>
+    ["Shipped", "Local Delivery", "Delivered", "Cancelled"]
+      .includes(order.status)
   );
 
   if (!historyOrders.length) {
-    orderHistoryList.innerHTML =
-      `<p class="muted">No order history yet.</p>`;
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.textContent = "No order history yet.";
+    orderHistoryList.appendChild(empty);
     return;
   }
 
+  const table = document.createElement("div");
+  table.className = "order-history-table";
+
+  const headings = [
+    "Order ID",
+    "Customer",
+    "Product",
+    "Amount",
+    "Payment",
+    "Status",
+    "Actions"
+  ];
+
+  const header = document.createElement("div");
+  header.className = "order-history-header";
+
+  headings.forEach((label) => {
+    const cell = document.createElement("div");
+    cell.className = "order-history-heading";
+    cell.textContent = label;
+    header.appendChild(cell);
+  });
+
+  table.appendChild(header);
+
   historyOrders.forEach((order) => {
     const card = document.createElement("div");
-    card.className = "order-card order-card--readonly";
+    card.className = "order-history-row";
 
-    const title = document.createElement("h3");
-    title.textContent = order.orderId || order.id;
+    function addCell(label, value, className = "") {
+      const cell = document.createElement("div");
+      cell.className = `order-history-cell ${className}`.trim();
+      cell.dataset.label = label;
 
-    const fields = [
-      ["Customer", order.customer],
-      ["Phone", order.phone],
-      ["Product", order.product],
-      ["Size", order.size],
-      ["Colour", order.colour],
-      ["Quantity", order.quantity || 1],
-      ["Amount", `₹${order.amount || 0}`],
-      ["Payment", order.payment],
-      ["Address", order.address],
-      ["Status", order.status || "Confirmed"],
-      ["Tracking ID",
-        order.status === "Shipped" ? (order.trackingId || "-") : "-"
-      ]
-    ];
+      const text = document.createElement("span");
+      text.className = "order-history-value";
+      text.textContent =
+        value == null || value === "" ? "-" : String(value);
 
-    fields.forEach(([label, value]) => {
-      const p = document.createElement("p");
-      p.textContent = `${label}: ${value || "-"}`;
-      card.appendChild(p);
-    });
+      cell.appendChild(text);
+      card.appendChild(cell);
+      return cell;
+    }
 
-    if ((order.status || "").toLowerCase() === "local delivery") {
-      const actions = document.createElement("div");
-      actions.className = "order-history-actions";
+    addCell("Order ID", order.orderId || order.id);
+    addCell("Customer", order.customer);
+    addCell(
+      "Product",
+      `${order.product || "-"} (${order.size || "-"}, ${order.colour || "-"})`
+    );
+    addCell("Amount", `₹${order.amount || 0}`, "history-amount");
+    addCell("Payment", order.payment);
 
+    const statusCell = addCell(
+      "Status",
+      order.status || "Confirmed",
+      "history-status"
+    );
+
+    statusCell.querySelector(".order-history-value")
+      .classList.add("status-badge");
+
+    const actionsCell = document.createElement("div");
+    actionsCell.className =
+      "order-history-cell order-history-actions-cell";
+    actionsCell.dataset.label = "Actions";
+
+    const actions = document.createElement("div");
+    actions.className = "order-history-actions";
+
+    const status = (order.status || "").toLowerCase();
+
+    if (status === "local delivery") {
       const deliveredButton = document.createElement("button");
       deliveredButton.className = "button";
       deliveredButton.textContent = "Delivered";
@@ -457,65 +493,51 @@ function renderOrderHistory() {
         deliveredButton.textContent = "Updating…";
 
         try {
-          await updateDoc(
-            doc(db, "orders", order.id),
-            {
-              status: "Delivered",
-              trackingId: "",
-              updatedAt: serverTimestamp()
-            }
-          );
+          await updateDoc(doc(db, "orders", order.id), {
+            status: "Delivered",
+            trackingId: "",
+            updatedAt: serverTimestamp()
+          });
         } catch (error) {
           console.error(error);
           deliveredButton.disabled = false;
           deliveredButton.textContent = "Delivered";
-          alert("Could not mark this order as Delivered. Please try again.");
+          alert("Could not update the order. Please try again.");
         }
       });
 
       actions.appendChild(deliveredButton);
-      card.appendChild(actions);
-    } else if (
-      (order.status || "").toLowerCase() !== "delivered"
-    ) {
-      const actions = document.createElement("div");
-      actions.className = "order-history-actions";
-
+    } else if (status !== "delivered") {
       const editButton = document.createElement("button");
       editButton.className = "button";
       editButton.textContent = "Edit Order";
+      editButton.addEventListener("click", () => {
+        startHistoryEdit(card, order);
+      });
 
       const deleteButton = document.createElement("button");
       deleteButton.className = "button button-delete";
       deleteButton.textContent = "Delete Order";
+      deleteButton.addEventListener("click", () => {
+        deleteHistoryOrder(order, deleteButton);
+      });
 
-      editButton.addEventListener(
-        "click",
-        () => startHistoryEdit(card, order)
-      );
-
-      deleteButton.addEventListener(
-        "click",
-        () => deleteHistoryOrder(order, deleteButton)
-      );
-
-      actions.append(
-        editButton,
-        deleteButton
-      );
-
-      card.appendChild(actions);
+      actions.append(editButton, deleteButton);
     } else {
-      const completed = document.createElement("p");
-      completed.className =
-        "order-completed-label";
+      const completed = document.createElement("span");
+      completed.className = "order-completed-label";
       completed.textContent = "✓ Completed";
-      card.appendChild(completed);
+      actions.appendChild(completed);
     }
 
-    orderHistoryList.appendChild(card);
+    actionsCell.appendChild(actions);
+    card.appendChild(actionsCell);
+    table.appendChild(card);
   });
+
+  orderHistoryList.appendChild(table);
 }
+
 
 function startHistoryEdit(card, order) {
   if (card.dataset.editing === "true") {
