@@ -599,22 +599,94 @@
       </div>
     </section>
 
-    <section class="card" id="manualSection" data-admin-section="manual">
-      <p class="eyebrow">MANUAL ORDERS</p><h2>Add Manual Order</h2>
-      <p class="muted">For WhatsApp, Instagram, phone and other offline orders. The system generates the next BKR order ID automatically.</p>
-      <form id="manualOrderForm" class="order-form">
-        <label>Customer name<input id="customer" required></label>
-        <label>Phone<input id="phone" type="tel" required></label>
-        <label>Product<input id="product" value="Barakahh Printed T-Shirt" required></label>
-        <label>Size<select id="size" required><option value="">Select size</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></label>
-        <label>Colour<select id="colour" required><option>Black</option><option>White</option></select></label>
-        <label>Quantity<input id="quantity" type="number" min="1" value="1" required></label>
-        <label>Amount (₹)<input id="amount" type="number" min="0" value="499" required></label>
-        <label>Payment<select id="payment" required><option>COD</option><option>UPI</option><option>Online Payment</option><option>Paid</option></select></label>
-        <label>Address<textarea id="address" rows="3" required></textarea></label>
-        <button class="button" type="submit" id="saveOrder">Create Manual Order</button><p id="formMessage" class="muted"></p>
-      </form>
-    </section>
+  
+<section class="card" id="manualSection" data-admin-section="manual">
+  <p class="eyebrow">MANUAL ORDERS</p>
+  <h2>Add Manual Order</h2>
+  <p class="muted">
+    For WhatsApp, Instagram, phone and other offline orders.
+    The system generates the next BKR order ID automatically.
+  </p>
+
+  <form id="manualOrderForm" class="order-form">
+    <label>
+      Customer name
+      <input id="customer" required>
+    </label>
+
+    <label>
+      Phone
+      <input id="phone" type="tel" required>
+    </label>
+
+    <label>
+      Product
+      <input id="product" value="Barakahh Printed T-Shirt" required>
+    </label>
+
+    <label>
+      Size
+      <select id="size" required>
+        <option value="">Select size</option>
+        <option>XS</option>
+        <option>S</option>
+        <option>M</option>
+        <option>L</option>
+        <option>XL</option>
+        <option>XXL</option>
+      </select>
+    </label>
+
+    <label>
+      Colour
+      <select id="colour" required>
+        <option>Black</option>
+        <option>White</option>
+      </select>
+    </label>
+
+    <label>
+      Quantity
+      <input id="quantity" type="number" min="1" value="1" required>
+    </label>
+
+    <label>
+      Amount (₹)
+      <input id="amount" type="number" min="0" value="499" required>
+    </label>
+
+    <label>
+      Payment
+      <select id="payment" required>
+        <option>COD</option>
+        <option>UPI</option>
+        <option>Online Payment</option>
+        <option>Paid</option>
+      </select>
+    </label>
+
+    <label style="display:flex;align-items:center;gap:8px;">
+      <input
+        type="checkbox"
+        id="localOrder"
+        style="width:auto;"
+      >
+      Local Order — Address ആവശ്യമില്ല
+    </label>
+
+    <label id="addressField">Address
+      Address
+      <textarea id="address" rows="3" required></textarea>
+    </label>
+
+    <button class="button" type="submit" id="saveOrder">
+      Create Manual Order
+    </button>
+
+    <p id="formMessage" class="muted"></p>
+  </form>
+</section>
+
 
     <section class="card" id="manageSection" data-admin-section="manage">
       <p class="eyebrow">LIVE ORDERS</p><h2>Manage Orders</h2>
