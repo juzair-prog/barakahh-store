@@ -132,7 +132,17 @@ document.getElementById("viewAllRecentOrders")
       window.applyAdminSection("manage");
     }
   });
+const localOrderCheckbox = document.getElementById("localOrder");
+const addressInput = document.getElementById("address");
 
+localOrderCheckbox.addEventListener("change", () => {
+  addressField.style.display = localOrderCheckbox.checked ? "none" : "";
+  addressInput.required = !localOrderCheckbox.checked;
+
+  if (localOrderCheckbox.checked) {
+    addressInput.value = "";
+  }
+});
 manualOrderForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -155,7 +165,9 @@ manualOrderForm.addEventListener("submit", async (event) => {
   const quantity = Number(document.getElementById("quantity").value);
   const amount = Number(document.getElementById("amount").value);
   const payment = document.getElementById("payment").value;
-  const address = document.getElementById("address").value.trim();
+  const localOrder = document.getElementById("localOrder").checked;
+  const addressField = document.getElementById("addressField");
+  const address = localOrder ? "" : document.getElementById("address").value.trim(); 
 
   try {
     const counterRef = doc(db, "settings", "orderCounter");
@@ -208,6 +220,9 @@ manualOrderForm.addEventListener("submit", async (event) => {
       "Barakahh Printed T-Shirt";
     document.getElementById("quantity").value = "1";
     document.getElementById("amount").value = "499";
+    document.getElementById("localOrder").checked = false;
+    document.getElementById("addressField").style.display = "";
+    document.getElementById("address").required = true;
   } catch (error) {
     console.error(error);
     formMessage.textContent =
